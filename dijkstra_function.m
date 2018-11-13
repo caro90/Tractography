@@ -1,16 +1,15 @@
-%%%2D dijkstra function
-
-function [d,p_i,pj,QS1]=dijkstra_function(i0,j0,X,Y,Vx,Vy,Cl,Cp,L1max,L1)%,trace,FA,MD,vol_3D,cp)
+% 2D dijkstra function
+function [d,p_i,pj,QS1]=dijkstra_function(i0,j0,X,Y,Vx,Vy,fa)
 global p0;
 global f1;
 global f2;
 global f3;
 
-%% cost table:
+%cost table:
 d=ones(size(Vx))*1e9;
 d(i0,j0)=0;
 
-%% Stous pinakes p_i kai pj (previous) apothikeuoume kathe fora ton proigoumeno pixel komvo (position index) 
+%Stous pinakes p_i kai pj (previous) apothikeuoume kathe fora ton proigoumeno pixel komvo (position index) 
 p_i=-ones(size(Vx));
 pj=-ones(size(Vx));
 %k=0;
@@ -19,10 +18,10 @@ pj=-ones(size(Vx));
 p_i(i0,j0)=i0;
 pj(i0,j0)=j0;
 
-%% Sto pinaka Qs thetoume 0 sto pixel-komvo pou epeksergastikame 
+% Sto pinaka Qs thetoume 0 sto pixel-komvo pou epeksergastikame 
 QS=ones(size(Vx));
 [N,M]=size(p_i);
-%% trace,FA kai MD threshold gia na min ginetai dijkstra ektos kefaliou kai sto egefalonotiaio ugro
+% trace,FA kai MD threshold gia na min ginetai dijkstra ektos kefaliou kai sto egefalonotiaio ugro
 
 % for i=1:N
 %     for j=1:M
@@ -33,12 +32,12 @@ QS=ones(size(Vx));
 % end
 % to QS1 mono gia na gnorizoume se poious komvous egine o dijkstra
 QS1=QS;
-%%
+%
 f1=1;   % th1
 f2=0;   % th2  
 f3=1;   % th3
 
-%% i th1 einai i gonia metaksi ton : p(i-1),p(i),p(i+1)
+% i th1 einai i gonia metaksi ton : p(i-1),p(i),p(i+1)
 th1=[];
 p0=[];
 
@@ -91,11 +90,11 @@ while(sum(sum(QS))>0)
         a=aa(kk);
         b=bb(kk);   
         
-    %% katanomi ton baron(kostos) sta geitonika pixel 
+    % katanomi ton baron(kostos) sta geitonika pixel 
     %elegxos gia na min bgoume ektos orion tis eikonas:
     if (imin+a<=N) &&  (jmin+b<=M) && (imin+a>0) &&  (jmin+b>0) 
         
-        %%
+        %
         %To [X(imin+a,jmin+b),Y(imin+a,jmin+b)] einai to position index
         %tou epomenou pixel (enos apo tous 8 geitones tou current position
         %index)
@@ -107,7 +106,7 @@ while(sum(sum(QS))>0)
         dp_nn=dp; 
         dp=dp/norm(dp);
         
-        %% ---------th1--------
+        % ---------th1--------
         if(~isempty(th1))
             costh1=dot( (p1-p0)/norm(p1-p0),dp/norm(dp) );
         else
@@ -115,11 +114,11 @@ while(sum(sum(QS))>0)
         end       
         %----------------------
         
-        %% --------th2----------
+        % --------th2----------
         costh2=dot(dp,a_vector);
         %----------------------
         
-        %% -----------th3--------
+        % -----------th3--------
         %to b_vector einai to idiodianisma sto epomeno pixel
         b_vector=[Vx(imin+a,jmin+b),Vy(imin+a,jmin+b)];  
         if sum(b_vector)>0
@@ -130,10 +129,10 @@ while(sum(sum(QS))>0)
         
         d_1=f1*(1+costh1)+f2*(1-abs(costh2))+f3*(1-abs(costh3));
         %norm(dp_nn) eukleidia apostasi 
-       % dd=(Cl(imin,jmin))*d_1+(1-Cl(imin,jmin))*norm(dp_nn);
+        dd=(fa(imin,jmin))*d_1+(1-fa(imin,jmin))*norm(dp_nn);
 
-        %% *** 
-        dd=(Cl(imin,jmin))*d_1  +norm(dp_nn)* Cp(imin,jmin);
+        % *** 
+       % dd=(fa(imin,jmin))*d_1  +norm(dp_nn)* Cp(imin,jmin);
         
 %         if(L1(imin,jmin)==0)
 %             dd=1000;

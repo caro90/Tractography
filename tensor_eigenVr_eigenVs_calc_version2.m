@@ -1,7 +1,6 @@
 %Ypologismos (gia ola ta voxels mesa sto data set)
 %tou tanisti D,idiotimes,idiodianismata
-
-%% omoia sinartisi me tn tensor_eigenVr_eigenVs_calc apla gia allou tupou dataset
+% omoia sinartisi me tn tensor_eigenVr_eigenVs_calc apla gia allou tupou dataset
 
 %-------------------------------------------------------------------------
 function [Diffusion_tensor,V,S0,Diffusion_tensor_eigenvectors,...
@@ -21,26 +20,26 @@ function [Diffusion_tensor,V,S0,Diffusion_tensor_eigenvectors,...
 %         temp=1;
 %     end
 
-    %% xrisimopoioume ton A gia tin lisi tis eksisosis : g * D * g' = ln(S0)-ln(Sk)/b . (opou g o A) 
+    % xrisimopoioume ton A gia tin lisi tis eksisosis : g * D * g' = ln(S0)-ln(Sk)/b . (opou g o A) 
     A=gradients.^2; 
     A=[A,2*gradients(:,1).*gradients(:,2),2*gradients(:,1).*gradients(:,3),2*gradients(:,2).*gradients(:,3)];
 
 
-    %% signal density-gia kathe slice apo to dataset me gradient=0
+    % signal density-gia kathe slice apo to dataset me gradient=0
     S0=slices_indif_gradients(:,:,1:num_of_slices_in_diff_gradients,1);
     b=700;
     
     f1=size(slices_indif_gradients,1);
     f2=size(slices_indif_gradients,2);
     
-    %% (allagi gia taxutita) o V periexei to aristero melos tis eksisosis : g * D * g' = ln (S0)-ln(Sk)/b
+    % (allagi gia taxutita) o V periexei to aristero melos tis eksisosis : g * D * g' = ln (S0)-ln(Sk)/b
     V=zeros(f1,f2,num_of_slices_in_diff_gradients,numOfGradients);
         for k=1:numOfGradients
             V(:,:,:,k)=( -log( slices_indif_gradients(:,:,:,k) ) + log( S0(:,:,:) ) )/ b; 
             
         end
     
-    %% o V periexei to aristero melos tis eksisosis : g * D * g' = ln (S0)-ln(Sk)/b
+    % o V periexei to aristero melos tis eksisosis : g * D * g' = ln (S0)-ln(Sk)/b
 %     V=zeros(256,256,num_of_slices_in_diff_gradients,numOfGradients);
 %     for temp=1:num_of_slices_in_diff_gradients
 %         for k=1:numOfGradients
@@ -53,12 +52,12 @@ function [Diffusion_tensor,V,S0,Diffusion_tensor_eigenvectors,...
 %         end
 %     end
 
-    %% Gia na mn periexei nan times to V 
+    % Gia na mn periexei nan times to V 
             V(isnan(V))=0;
             V(isinf(V))=0;
 
             
-    %% Ypologismos tou tanisti D
+    % Ypologismos tou tanisti D
 
     Diffusion_tensor=zeros(f1,f2,num_of_slices_in_diff_gradients,6);
 
@@ -72,7 +71,7 @@ function [Diffusion_tensor,V,S0,Diffusion_tensor_eigenvectors,...
         end
     end
 
-   %% Ypologismos ton idiodianismaton kai ton idiotimon tou Diffusion tensor
+   % Ypologismos ton idiodianismaton kai ton idiotimon tou Diffusion tensor
     Diffusion_tensor_eigenvectors=zeros(f1,f2,num_of_slices_in_diff_gradients,9);
     Diffusion_tensor_eigenvalues=zeros(f1,f2,num_of_slices_in_diff_gradients,3);
 
@@ -97,11 +96,11 @@ function [Diffusion_tensor,V,S0,Diffusion_tensor_eigenvectors,...
       end
     end
 
-    %% Sortarima ton idiotimon
+    % Sortarima ton idiotimon
 
     [Diffusion_tensor_eigenvalues_sorted,index] = sort(Diffusion_tensor_eigenvalues,4,'descend');
 
-    %% cl=linear measure , cp=planar measure , cs=spherical measure (medical image analysis 2002)
+    % cl=linear measure , cp=planar measure , cs=spherical measure (medical image analysis 2002)
     %cl+cp+cs=1 
     % upologizo ta cp cs kai cl gia oles tis tomes 
     cl=(Diffusion_tensor_eigenvalues_sorted(:,:,:,1)-Diffusion_tensor_eigenvalues_sorted(:,:,:,2)) ./Diffusion_tensor_eigenvalues_sorted(:,:,:,1);
@@ -121,7 +120,7 @@ function [Diffusion_tensor,V,S0,Diffusion_tensor_eigenvectors,...
                 sqrt(Diffusion_tensor_eigenvalues_sorted(:,:,:,1).^2+Diffusion_tensor_eigenvalues_sorted(:,:,:,2).^2+Diffusion_tensor_eigenvalues_sorted(:,:,:,3).^2);
 
     
-    %% efarmogi tou index sortarismatos ton idiotimon sta idiodianismata
+    % efarmogi tou index sortarismatos ton idiotimon sta idiodianismata
     for y=1:num_of_slices_in_diff_gradients %slices
         for i=1:f1
             for j=1:f2
@@ -143,12 +142,12 @@ function [Diffusion_tensor,V,S0,Diffusion_tensor_eigenvectors,...
         end
     end
     
-    %% Trace calculation Trace(D)=?1+?2+?3
+    % Trace calculation Trace(D)=?1+?2+?3
     trace=Diffusion_tensor_eigenvalues(:,:,:,1)+...
           Diffusion_tensor_eigenvalues(:,:,:,2)+...
           Diffusion_tensor_eigenvalues(:,:,:,3);     
     
-   %% Fractional anisotropy 
+   % Fractional anisotropy 
     
     FA=sqrt(1/2)* sqrt( (Diffusion_tensor_eigenvalues(:,:,:,1)-Diffusion_tensor_eigenvalues(:,:,:,2) ).^2 + ...
                          (Diffusion_tensor_eigenvalues(:,:,:,1)-Diffusion_tensor_eigenvalues(:,:,:,3)).^2 + ...
@@ -156,10 +155,10 @@ function [Diffusion_tensor,V,S0,Diffusion_tensor_eigenvectors,...
                          ./(sqrt(Diffusion_tensor_eigenvalues(:,:,:,1).^2+Diffusion_tensor_eigenvalues(:,:,:,2).^2)+...
                          Diffusion_tensor_eigenvalues(:,:,:,3)).^2);
                      
-  %% Mean diffusivity
+  % Mean diffusivity
     MD=( Diffusion_tensor_eigenvalues(:,:,:,1)+Diffusion_tensor_eigenvalues(:,:,:,2)+Diffusion_tensor_eigenvalues(:,:,:,3))./3;
     
-  %% Radial diffusivity
+  % Radial diffusivity
     RD= (Diffusion_tensor_eigenvalues(:,:,:,2)+Diffusion_tensor_eigenvalues(:,:,:,3))./2;
     
     
