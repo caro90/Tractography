@@ -1,13 +1,10 @@
-%%%backtrack function 
-
 function [path_lin,path_col,B_backtrack]=dijkstra_backtrack_fun(d,pi,pj,i0,j0)
 B_backtrack=zeros(size(d));
 cp=1;
 path_lin=[];
 path_col=[];
 ss=0;
-while ~(pi(i0,j0)==i0 && pj(i0,j0)==j0 )
-     
+while ~(pi(i0,j0)==i0 && pj(i0,j0)==j0 )    
     i1=pi(i0,j0);
     j1=pj(i0,j0);
     i0=i1;
@@ -21,5 +18,6 @@ while ~(pi(i0,j0)==i0 && pj(i0,j0)==j0 )
         cp
     end
 end
- ss
+path_lin=reshape(path_lin,size(path_lin,2),1);
+path_col=reshape(path_col,size(path_col,2),1);
 end

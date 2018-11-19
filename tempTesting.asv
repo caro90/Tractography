@@ -1,5 +1,0 @@
-
-for i=1: length(tracts.length(2))
-   idx(i,:)=( tracts.tracts(1,i) tracts.tracts(2,i) tracts.tracts(3,i) );
-   
-end
