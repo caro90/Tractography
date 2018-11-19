@@ -1,4 +1,4 @@
-%% Efarmogi tou dijkstra se VectorFields 3D kai real data
+%%Efarmogi tou dijkstra se VectorFields 3D kai real data
 %Version 11/2/17
 % flag==0 for synthetic data
 % flag==1 for real data
@@ -10,7 +10,7 @@ flag=1;
 % vol_3D=img_double(:,:,:,1);
 
 if (flag==1 )
-%% fortosi idiodianismaton gia real data
+% fortosi idiodianismaton gia real data
 % slice1 kai slice 2 einai oi tomes metaksi ton 
 % opoion theloume na treksei o dijkstra
         slice1=44;
@@ -36,7 +36,7 @@ if (flag==1 )
         
 end
 
-%% epilogi simeiou  
+% epilogi simeiou  
 x_path=[40,38]; 
 y_path=[65,34];
 % to z setarete os sinolikos arithmos ton tomon
@@ -56,7 +56,7 @@ SliceThickness=1;
                    MD(:,:,slice1:slice2),vol_3D(:,:,slice1:slice2),SliceThickness,flag);
 
 
-%% plotting kai backtrack function call
+% plotting kai backtrack function call
 h1=plot3(X(i1,j1,z1),Y(i1,j1,z1),Z(i1,j1,z1),'o','MarkerSize',10);
 set(h1,'MarkerFaceColor',[0,1,0]);
 cmap=colormap(colorcube);
@@ -80,7 +80,7 @@ for k=1:1
         drawnow;
     %end
     
-    %% ---------------- plotting test gia real data -----------
+    %plotting test gia real data
     if (flag==3)
             figure;imshow(Cl(:,:,1),[0 1]);hold on;
             for i=1:length(path_vol) 

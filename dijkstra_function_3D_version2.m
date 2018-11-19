@@ -1,7 +1,7 @@
-%% 3D dijkstra function
+%%3D dijkstra function
 % omoio function me to dijkstra_function_3D me epipleon prosthikes sto kostos
 
-%% Variables
+% Variables
 % SliceThickness: ST
 
 function [d,p_i,pj,pz,QS]=dijkstra_function_3D_version2(i0,j0,z0,X,Y,Z,Vx,Vy,Vz,Vx3,Vy3,Vz3,...
@@ -27,8 +27,8 @@ pz(i0,j0,z0)=z0;
 [N,M,L]=size(vol_3D);
 QS=ones(size(Vx));
 
-%% trace,FA kai MD threshold gia na min ginetai dijkstra ektos 
-%% kefaliou kai sto egefalonotiaio ugro
+% trace,FA kai MD threshold gia na min ginetai dijkstra ektos 
+% kefaliou kai sto egefalonotiaio ugro
 if (flag==1)    
     for i=1:N
         for j=1:M
@@ -61,8 +61,7 @@ while (sum(QS(:)>0))
     [m,ii]=min(d(idx1));                           
     QS(idx1(ii))=0;
     [imin,jmin,zmin]=ind2sub(size(Vx),idx1(ii));
-
-%-----------------------------------------------------------------------------------------------  
+    
     %current primary eigenvector : 
     a_vector= [Vx(imin,jmin,zmin),Vy(imin,jmin,zmin),Vz(imin,jmin,zmin)];
     
@@ -100,7 +99,7 @@ while (sum(QS(:)>0))
             b=bb(kk);
             c=cc(i);
             
-            %% katanomi ton baron(kostos) sta geitonika pixel 
+            % katanomi ton baron(kostos) sta geitonika pixel 
             %elegxos gia na min bgoume ektos orion tis eikonas:
         if (imin+a<=N) &&  (jmin+b<=M) &&(zmin+c<=L) && (imin+a>0) &&  (jmin+b>0) && (zmin+c>0)         
             %To [X(imin+a,jmin+b),Y(imin+a,jmin+b)] einai to position index

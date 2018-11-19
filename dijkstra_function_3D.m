@@ -21,7 +21,7 @@ pz(i0,j0,z0)=z0;
 [N,M,L]=size(p_i);
 QS=ones(size(Vx));
 
-%% trace,FA kai MD threshold gia na min ginetai dijkstra ektos kefaliou kai sto egefalonotiaio ugro
+% trace,FA kai MD threshold gia na min ginetai dijkstra ektos kefaliou kai sto egefalonotiaio ugro
 for i=1:N
     for j=1:M
         for k=1:L
@@ -32,12 +32,12 @@ for i=1:N
     end
 end
 
-%%
+%
 f1=1; %th1
 f2=1; %th2
 f3=1; %th3
 
-%% i th1 einai i gonia metaksi ton : p(i-1),p(i),p(i+1)
+% i th1 einai i gonia metaksi ton : p(i-1),p(i),p(i+1)
 tic;
 th1=[];
 
@@ -46,14 +46,12 @@ jprev=[];
 zprev=[];
 p0=[];
 
-%%
 while (sum(QS(:)>0))
     idx1=find(QS==1);
     [m,ii]=min(d(idx1));                           
     QS(idx1(ii))=0;
     [imin,jmin,zmin]=ind2sub(size(Vx),idx1(ii));
 
-%-----------------------------------------------------------------------------------------------  
     %current primary eigenvector : 
     a_vector= [Vx(imin,jmin,zmin),Vy(imin,jmin,zmin),Vz(imin,jmin,zmin)];
     if(norm(a_vector)>0)
@@ -85,7 +83,7 @@ while (sum(QS(:)>0))
             b=bb(kk);
             c=cc(i);
             
-            %% katanomi ton baron(kostos) sta geitonika pixel 
+            %katanomi ton baron(kostos) sta geitonika pixel 
             %elegxos gia na min bgoume ektos orion tis eikonas:
         if (imin+a<=N) &&  (jmin+b<=M) &&(zmin+c<=L) && (imin+a>0) &&  (jmin+b>0) && (zmin+c>0)         
             %To [X(imin+a,jmin+b),Y(imin+a,jmin+b)] einai to position index
