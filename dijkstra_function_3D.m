@@ -1,5 +1,4 @@
 % 3D dijkstra function version 1
-
 function [d,p_i,pj,pz,QS]=dijkstra_function_3D(i0,j0,z0,X,Y,Z,Vx,Vy,Vz,Cl,FA,trace,MD,...
                                                                     vol_3D,SliceThickness)
 global p0;

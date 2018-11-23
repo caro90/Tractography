@@ -1,26 +1,23 @@
 %%3D Dijkstra 
 
-function [d,pi,pj,pz,QS]=dijkstra_function_3D_version2(i0,j0,z0,X,Y,Z,Vx,Vy,Vz,Fa)
+function [d,p_i,pj,pz,QS]=dijkstra_function_3D_version2(i0,j0,z0,X,Y,Z,Vx,Vy,Vz,Vx3,Vy3,Vz3,Cl,Cp,Cs,FA,vol_3D,ST,flag)
 global p0;
 global f1;
 global f2;
 global f3;
 %global f4;
-
 %Cost table:
-d=ones(size(Fa))*1e9;
-pi=-ones(size(Fa));
-pj=-ones(size(Fa));
-pz=-ones(size(Fa));
+d=ones(size(Cl))*1e9;
+p_i=-ones(size(Cl));
+pj=-ones(size(Cl));
+pz=-ones(size(Cl));
 d(i0,j0,z0)=0;
 k=0;
 
-pi(i0,j0,z0)=i0;
+p_i(i0,j0,z0)=i0;
 pj(i0,j0,z0)=j0;
 pz(i0,j0,z0)=z0;
-N=size(Fa,1);
-M=size(Fa,2);
-L=7;
+[N,M,L]=size(vol_3D);
 QS=ones(size(Vx));
 
 %Trace,FA kai MD thresholds to restrict the area where Dijkstra runs
@@ -60,6 +57,9 @@ while (sum(QS(:)>0))
     %Current primary eigenvector
     a_vector= [Vx(imin,jmin,zmin),Vy(imin,jmin,zmin),Vz(imin,jmin,zmin)];
     
+    %Current eigenvector(third)
+    c_vector=[Vx3(imin,jmin,zmin),Vy3(imin,jmin,zmin),Vz3(imin,jmin,zmin)];
+    
     if(norm(a_vector)>0)
         a_vector=a_vector/norm(a_vector);
     end
@@ -74,7 +74,7 @@ while (sum(QS(:)>0))
         th1=[];
         cos_th4_cp=[];
     else
-        iprev=pi(imin,jmin,zmin);
+        iprev=p_i(imin,jmin,zmin);
         jprev=pj(imin,jmin,zmin);
         zprev=pz(imin,jmin,zmin);
         %Prev position index:
@@ -95,7 +95,7 @@ while (sum(QS(:)>0))
             %[X(imin+a,jmin+b),Y(imin+a,jmin+b)] is the position index
             %of the next pixel (one out of the 8 neighbors of current position index)
             %dp: p(i+1)-pi
-            dp=( [X(imin+a,jmin+b,zmin+c),Y(imin+a,jmin+b,zmin+c),Z(imin+a,jmin+b,zmin+c)]-p1 );% .*[1,1,ST]; %ST slice thickness
+            dp=( [X(imin+a,jmin+b,zmin+c),Y(imin+a,jmin+b,zmin+c),Z(imin+a,jmin+b,zmin+c)]-p1 ).*[1,1,ST];
             dp_nn=dp; 
             dp=dp/norm(dp); 
             %th1
@@ -113,18 +113,26 @@ while (sum(QS(:)>0))
                 b_vector=b_vector/norm(b_vector);
             end
             costh3=dot(a_vector,b_vector);   
+            %%th4_cp
+            if(~isempty(cos_th4_cp))
+                 cos_th4_cp=dot(dp,c_vector/norm(c_vector));
+                 cos_th4_cp=1-abs(cos_th4_cp);
+            else
+                 cos_th4_cp=1;
+            end    
             
             A=f1*(1+costh1);
             B=f2*(1-abs(costh2));
             C=f3*(1-abs(costh3));
             %dp_nn euclidean distance
-            dd=Fa(imin,jmin,zmin)*(B+C)+(1-Fa(imin,jmin,zmin))*A; 
+            dd=Cl(imin,jmin,zmin)*(B+C)+(1-Cl(imin,jmin,zmin))*A; 
             
             if d(imin+a,jmin+b,zmin+c)>d(imin,jmin,zmin)+dd 
                 d(imin+a,jmin+b,zmin+c)=d(imin,jmin,zmin)+dd;
-                pi(imin+a,jmin+b,zmin+c)=imin;
+                p_i(imin+a,jmin+b,zmin+c)=imin;
                 pj(imin+a,jmin+b,zmin+c)=jmin;
                 pz(imin+a,jmin+b,zmin+c)=zmin;
+            
            end
         end
       end
