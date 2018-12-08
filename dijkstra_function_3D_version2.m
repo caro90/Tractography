@@ -1,5 +1,4 @@
 %%3D Dijkstra 
-
 function [d,pi,pj,pz,QS]=dijkstra_function_3D_version2(i0,j0,z0,X,Y,Z,Vx,Vy,Vz,Fa)
 global p0;
 global f1;
@@ -37,7 +36,6 @@ QS=ones(size(Vx));
 %         end
 %     end
 % end
-
 f1=1;
 f2=1;
 f3=1;
@@ -95,7 +93,7 @@ while (sum(QS(:)>0))
             %[X(imin+a,jmin+b),Y(imin+a,jmin+b)] is the position index
             %of the next pixel (one out of the 8 neighbors of current position index)
             %dp: p(i+1)-pi
-            dp=( [X(imin+a,jmin+b,zmin+c),Y(imin+a,jmin+b,zmin+c),Z(imin+a,jmin+b,zmin+c)]-p1 );% .*[1,1,ST]; %ST slice thickness
+            dp=( [X(imin+a,jmin+b,zmin+c),Y(imin+a,jmin+b,zmin+c),Z(imin+a,jmin+b,zmin+c)]-p1 );
             dp_nn=dp; 
             dp=dp/norm(dp); 
             %th1

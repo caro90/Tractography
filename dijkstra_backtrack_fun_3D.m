@@ -7,6 +7,10 @@ function [path_lin,path_col,path_vol,B_backtrack]=dijkstra_backtrack_fun_3D(d,pi
     path_col=[];
     path_vol=[];
     ss=0;
+    path_lin(cp)=i0;
+    path_col(cp)=j0;
+    path_vol(cp)=z0;
+    cp=cp+1; 
     while ~(pi(i0,j0,z0)==i0 && pj(i0,j0,z0)==j0 && pz(i0,j0,z0)==z0)
         i1=pi(i0,j0,z0);
         j1=pj(i0,j0,z0);
